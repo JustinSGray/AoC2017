@@ -28,47 +28,58 @@ class hexgrid(object):
         self.col += 1
         self.row -= 1
 
+    # def home(self): 
+
+    #     self.save_col = self.col
+    #     self.save_row = self.row
+    #     count = 0
+
+    #     while self.row != 0 or self.col !=0: 
+    #         count += 1 
+
+    #         if self.col == 0: 
+    #             if self.row < 0: 
+    #                 self.n()
+    #             else: 
+    #                 self.s()
+
+    #         if self.row < 0 and self.col >= 0:
+    #             # print('h nw')
+    #             self.nw()
+    #         elif self.row < 0 and self.col < 0:
+    #             # print('h ne')
+    #             self.ne()        
+    #         elif self.row >= 0 and self.col < 0:
+    #             # print('h se')
+    #             self.se() 
+    #         elif self.row >= 0 and self.col > 0:
+    #             # print('h sw')
+    #             self.sw()   
+    #         elif abs(self.col) == 1 and self.row > 1: 
+    #             # print('h s')
+    #             self.s()
+    #         elif abs(self.col) == 1 and self.row < 1: 
+    #             # print('h n')
+    #             self.n()
+
+    #         # print('home', self.col, self.row)
+    #         # print()
+
+    #     self.col = self.save_col
+    #     self.row = self.save_row
+
+    #     return count 
+
     def home(self): 
+        dx = abs(self.col)
+        dy = abs(self.row)
 
-        self.save_col = self.col
-        self.save_row = self.row
-        count = 0
-
-        while self.row != 0 or self.col !=0: 
-            count += 1 
-
-            if self.col == 0: 
-                if self.row < 0: 
-                    self.n()
-                else: 
-                    self.s()
-
-            if self.row < 0 and self.col >= 0:
-                # print('h nw')
-                self.nw()
-            elif self.row < 0 and self.col < 0:
-                # print('h ne')
-                self.ne()        
-            elif self.row >= 0 and self.col < 0:
-                # print('h se')
-                self.se() 
-            elif self.row >= 0 and self.col > 0:
-                # print('h sw')
-                self.sw()   
-            elif abs(self.col) == 1 and self.row > 1: 
-                # print('h s')
-                self.s()
-            elif abs(self.col) == 1 and self.row < 1: 
-                # print('h n')
-                self.n()
-
-            # print('home', self.col, self.row)
-            # print()
-
-        self.col = self.save_col
-        self.row = self.save_row
-
-        return count 
+        if dx == 0: 
+            return dy//2
+        elif dx <= dy: 
+            return dx + (dy-dx)//2
+        elif dx > dy: 
+            return dy
 
 def walk(path): 
     hg = hexgrid()
