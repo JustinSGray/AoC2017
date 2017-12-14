@@ -68,7 +68,7 @@ def delay(fw, scan_dir):
     while check: 
         increment_scanners(fw, scan_dir)
         caughts, check = walk(copy.deepcopy(fw), copy.deepcopy(scan_dir), True)
-        print('foo', delay, check, sum(caughts)) 
+        # print('foo', delay, check, sum(caughts)) 
 
         delay += 1 
         
