@@ -2,37 +2,6 @@
 
 class Gen(object): 
 
-    def __init__(self, start, factor): 
-        self.factor = factor
-
-        self.last = start
-
-    def __call__(self): 
-
-        self.last = (self.last*self.factor)%2147483647
-
-        return str(bin(self.last))[2:].rjust(32, '0')
-
-
-def prob1(A_start, B_start): 
-    gA = Gen(A_start, 16807)
-    gB = Gen(B_start, 48271)
-
-    count = 0
-    for i in range(40*10**6): 
-        count += gA()[16:] == gB()[16:]
-
-    return count
-
-
-# print('test1', prob1(65, 8921), 588)
-
-# real 1 puzzle input A = 703, B = 516
-# print('real1', prob1(703, 516))
-
-
-class GenPicky(object): 
-
     def __init__(self, start, factor, lcm): 
         self.factor = factor
 
@@ -48,23 +17,26 @@ class GenPicky(object):
                 break
 
         # return self.last
-        return str(bin(self.last))[2:].rjust(32, '0')
+        return str(bin(self.last))[-16:]
 
 
-def prob2(A_start, B_start): 
-    gA = GenPicky(A_start, 16807, 4)
-    gB = GenPicky(B_start, 48271, 8)
+def prob(A_start, B_start, lcm_A=1, lcm_B=1, n_pairs=40*10**6): 
+    gA = Gen(A_start, 16807, lcm_A)
+    gB = Gen(B_start, 48271, lcm_B)
 
     count = 0
-    for i in range(5*10**6): 
-        a = gA()[16:]
-        b = gB()[16:]
- 
-        count += a == b
+    for i in range(n_pairs): 
+        count += gA() == gB()
 
     return count
 
+
+# print('test1', prob(65, 8921), 588)
+
+# real 1 puzzle input A = 703, B = 516
+# print('real1', prob(703, 516))
+
 # test
-# print(prob2(65, 8921), 309)
+# print(prob2(65, 8921, 4, 8, 5*10**6), 309)
 #real
-print(prob2(703, 516))
+print(prob(703, 516, 4, 8, 5*10**6))
