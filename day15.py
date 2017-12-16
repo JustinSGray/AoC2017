@@ -1,5 +1,8 @@
 
 
+
+bit_mask = 0b1111111111111111
+
 class Gen(object): 
 
     def __init__(self, start, factor, lcm): 
@@ -17,8 +20,7 @@ class Gen(object):
                 break
 
         # return self.last
-        return str(bin(self.last))[-16:]
-
+        return self.last
 
 def prob(A_start, B_start, lcm_A=1, lcm_B=1, n_pairs=40*10**6): 
     gA = Gen(A_start, 16807, lcm_A)
@@ -26,7 +28,7 @@ def prob(A_start, B_start, lcm_A=1, lcm_B=1, n_pairs=40*10**6):
 
     count = 0
     for i in range(n_pairs): 
-        count += gA() == gB()
+        count += gA() & bit_mask == gB() & bit_mask
 
     return count
 
@@ -39,4 +41,10 @@ def prob(A_start, B_start, lcm_A=1, lcm_B=1, n_pairs=40*10**6):
 # test
 # print(prob2(65, 8921, 4, 8, 5*10**6), 309)
 #real
+
+
+import time 
+st = time.time()
 print(prob(703, 516, 4, 8, 5*10**6))
+
+print('time {} seconds'.format(time.time() - st))
