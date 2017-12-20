@@ -60,6 +60,48 @@ snd a
 jgz f -16
 jgz a -19"""
 
+real="""set i 31
+set a 1
+mul p 17
+jgz p p
+mul a 2
+add i -1
+jgz i -2
+add a -1
+set i 127
+set p 735
+mul p 8505
+mod p a
+mul p 129749
+add p 12345
+mod p a
+set b p
+mod b 10000
+snd b
+add i -1
+jgz i -9
+jgz a 3
+rcv b
+jgz b -1
+set f 0
+set i 126
+rcv a
+rcv b
+set p a
+mul p -1
+add p b
+jgz p 4
+snd a
+set a b
+jgz 1 3
+snd b
+set f 1
+add i -1
+jgz i -11
+snd a
+jgz f -16
+jgz a -19"""
+
 
 
 class Reg(object): 
@@ -147,7 +189,7 @@ class Reg2(object):
 
     def send_to_pair(self, val): 
         self.pair.queue.append(val)
-        self.pair.wait = False
+        # self.pair.wait = False
 
     def oper(self, cmd): 
         inst = cmd[0]
@@ -164,9 +206,12 @@ class Reg2(object):
             except ValueError: 
                 val = self.reg[ord(cmd[1])-97]
             self.send_to_pair(val)
-            # print(self.id, "snd", val, len(self.pair.queue))
+            print(self.id, "snd", val, self.pair.queue)
             self.snd_counter += 1
             self.cur_location += 1 
+
+            if self.snd_counter >= 10 and self.id ==0: 
+                exit()
             return 
 
         elif inst == "rcv":
@@ -174,16 +219,18 @@ class Reg2(object):
                 val = int(cmd[1])
             except ValueError: 
                 val = ord(cmd[1])-97 
-        
+            print("    ", self.id, 'rcv', val)
+
             if self.queue: 
                
                 # print(self.id, 'rcv', cmd, val)
                 self.reg[val] = self.queue.pop(0)
                 self.cur_location += 1
-            elif self.reg[val] !=0: 
-                self.stop = True
+            # elif self.reg[val] !=0: 
+            #     self.stop = True
             else: 
                 self.wait = True
+            print('    ', self.queue)
             return 
 
         try: 
@@ -205,6 +252,7 @@ class Reg2(object):
             
         elif inst == "jgz": 
             if self.reg[target] > 0: 
+                print('bar', self.id, 'jgz', val)
                 self.cur_location += val
                 return 
         self.cur_location += 1
