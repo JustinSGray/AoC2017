@@ -97,7 +97,7 @@ def part1(inp ):
 
 
 
-def part2(inp): 
+def part2(inp, n_states, i_label, n_steps): 
     grid, center = parse_input(inp,2) 
 
     cur_x = center
@@ -139,10 +139,8 @@ def part2(inp):
         (3,3):1,
     }
 
-    n_states = 4
-
     infection_counter = 0
-    for i in range(10000000):
+    for i in range(n_steps):
         # print(i, cur_x, cur_y, grid[cur_y, cur_x], cur_dir)
         
         cur_dir = change_map[grid[cur_y, cur_x], cur_dir]
@@ -150,7 +148,7 @@ def part2(inp):
         # print("  ", move, cur_dir)
 
         grid[cur_y, cur_x] = (grid[cur_y, cur_x]+1)%n_states
-        if (grid[cur_y, cur_x] % n_states) == 2: 
+        if (grid[cur_y, cur_x] % n_states) == i_label: 
             infection_counter += 1
 
         cur_x += move[0]
@@ -161,6 +159,6 @@ def part2(inp):
     print(infection_counter)
 
 part1(real)
-part2(real)
+part2(real, 4, 2, 10000000)
 
 
