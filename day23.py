@@ -17,11 +17,8 @@ class Reg(object):
                 cmd = self.lines[self.cur_location].split()
             except IndexError: 
                 break
-            print(self.cur_location, cmd)
             self.oper(cmd)
 
-            print(self.reg)
-            print()
         return self.num_mul
 
     def oper(self, cmd): 
@@ -92,3 +89,16 @@ jnz 1 -23"""
 
 reg = Reg(real)
 print('part 1', reg.part1())
+
+
+reg_b = 57 * 100 + 100_000  # puzzle_input[0], puzzle_input[4], puzzle_input[5]
+reg_c = reg_b + 17_000  # puzzle_input[6], puzzle_input[7]
+step_size = 17  # puzzle_input[30]
+
+h = 0
+for x in range(reg_b,reg_c+1,step_size):
+    for i in range(2,x):
+        if x % i == 0:
+            h += 1
+            break
+print(h)
